@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.InvalidStudentDataException;
@@ -51,8 +50,15 @@ public class StudentService {
 
     public Collection<Student> findByAge(int age) {
         if (age < 11) {
-            throw new IllegalArgumentException("Возраст должен быть не меньше 11 лет");
+            throw new InvalidStudentDataException("Возраст должен быть не меньше 11 лет");
         }
         return studentRepository.findByAge(age);
+    }
+
+    public Collection<Student> findByAgeBetween(int minAge, int maxAge) {
+        if (minAge < 11 || maxAge < 11) {
+            throw new InvalidStudentDataException("Возраст должен быть не меньше 11 лет");
+        }
+        return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 }

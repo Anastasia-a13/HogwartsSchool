@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
@@ -49,7 +48,7 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public Collection<Faculty> findByColor(String color) {
-        return facultyRepository.findByColor(color);
+    public Collection<Faculty> findFacultyByNameOrColor(String query) {
+        return facultyRepository.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(query, query);
     }
 }
