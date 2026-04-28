@@ -7,19 +7,20 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+@NoArgsConstructor
+public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    private int age;
+    private String filePath;
+    private long fileSize;
+    private String mediaType;
 
-    @ManyToOne
-    @JoinColumn(name = "faculty_id")
-    private Faculty faculty;
+    @Lob
+    private byte[] data;
 
-    @OneToOne(mappedBy = "student")
-    private Avatar avatar;
+    @OneToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 }
