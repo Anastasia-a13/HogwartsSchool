@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.hogwarts.school.exception.InvalidStudentDataException;
-import ru.hogwarts.school.exception.StudentNotFoundExeption;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 
 @ControllerAdvice
 public class StudentControllerAdvice {
-    @ExceptionHandler(StudentNotFoundExeption.class)
-    public ResponseEntity<String> handleStudentNotFoundExeption(StudentNotFoundExeption e) {
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<String> handleStudentNotFoundExeption(StudentNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
