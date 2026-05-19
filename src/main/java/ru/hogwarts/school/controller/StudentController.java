@@ -3,17 +3,21 @@ package ru.hogwarts.school.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, StudentRepository studentRepository) {
         this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("{id}")
@@ -50,5 +54,20 @@ public class StudentController {
     public Faculty getStudentFaculty(@PathVariable Long id) {
         Student student = studentService.findStudent(id);
         return student.getFaculty();
+    }
+    @GetMapping("/count")
+    public long getStudentCount() {
+        return studentRepository.countAllStudents();
+    }
+
+    @GetMapping("/average-age")
+    public double getAverageStudentAge() {
+        Double averageAge = studentRepository.getAverageAge();
+        return averageAge != null ? averageAge : 0.0;
+    }
+
+    @GetMapping("/last-five")
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
     }
 }
