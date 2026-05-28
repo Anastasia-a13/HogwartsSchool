@@ -76,4 +76,15 @@ public class StudentController {
         return studentService.getStudentNamesStartingWithA();
     }
 
+    @GetMapping("/print-parallel")
+    public String printStudentsParallel() {
+        studentService.printStudentsParallel();
+        return "Started parallel printing of student names";
+    }
+
+    @GetMapping("/print-synchronized")
+    public String printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
+        return "Completed synchronized printing of student names";
+    }
 }
