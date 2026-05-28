@@ -55,6 +55,7 @@ public class StudentController {
         Student student = studentService.findStudent(id);
         return student.getFaculty();
     }
+
     @GetMapping("/count")
     public long getStudentCount() {
         return studentRepository.countAllStudents();
@@ -62,12 +63,17 @@ public class StudentController {
 
     @GetMapping("/average-age")
     public double getAverageStudentAge() {
-        Double averageAge = studentRepository.getAverageAge();
-        return averageAge != null ? averageAge : 0.0;
+        return studentService.getAverageStudentAge();
     }
 
     @GetMapping("/last-five")
     public List<Student> getLastFiveStudents() {
         return studentRepository.findLastFiveStudents();
     }
+
+    @GetMapping("/names-starting-with-a")
+    public List<String> getStudentNamesStartingWithA() {
+        return studentService.getStudentNamesStartingWithA();
+    }
+
 }

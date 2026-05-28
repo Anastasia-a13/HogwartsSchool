@@ -10,6 +10,8 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -96,5 +98,21 @@ public class StudentService {
         Collection<Student> students = studentRepository.findByAgeBetween(minAge, maxAge);
         logger.debug("Found {} students in age range {}-{}", students.size(), minAge, maxAge);
         return students;
+    }
+    public List<String> getStudentNamesStartingWithA() {
+        logger.info("Was invoked method for get student names starting with A");
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(upperCase -> upperCase.startsWith("A"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    public double getAverageStudentAge() {
+        logger.info("Was invoked method for calculate average student age");
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
     }
 }
