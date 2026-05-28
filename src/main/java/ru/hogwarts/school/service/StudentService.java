@@ -99,6 +99,7 @@ public class StudentService {
         logger.debug("Found {} students in age range {}-{}", students.size(), minAge, maxAge);
         return students;
     }
+
     public List<String> getStudentNamesStartingWithA() {
         logger.info("Was invoked method for get student names starting with A");
         return studentRepository.findAll().stream()
@@ -108,11 +109,50 @@ public class StudentService {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
     public double getAverageStudentAge() {
         logger.info("Was invoked method for calculate average student age");
         return studentRepository.findAll().stream()
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+
+    public void printStudentsParallel() {
+        logger.info("Was invoked method for print students in parallel mode");
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+        Thread thread1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+        Thread thread2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+        thread1.start();
+        thread2.start();
+        logger.info("Parallel printing initiated - threads are running");
+    }
+    public void printStudentsSynchronized() {
+        logger.info("Was invoked method for print students in synchronized mode");
+        List<Student> students = studentRepository.findAll();
+        printName(students.get(0).getName());
+        printName(students.get(1).getName());
+        Thread thread1 = new Thread(() -> {
+            printName(students.get(2).getName());
+            printName(students.get(3).getName());
+        });
+        Thread thread2 = new Thread(() -> {
+            printName(students.get(4).getName());
+            printName(students.get(5).getName());
+        });
+        thread1.start();
+        thread2.start();
+        logger.info("Synchronized printing initiated - threads are running");
+    }
+    private synchronized void printName(String name) {
+        System.out.println(name);
     }
 }
